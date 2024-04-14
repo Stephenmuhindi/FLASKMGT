@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tenant Dashboard</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2 class="text-center mt-5">Tenant Dashboard</h2>
+                <div class="mt-5">
+                    <h5>Welcome, Tenant</h5>
+                    <p>You can manage your rent and utilities here.</p>
+                </div>
+                <div class="mt-5">
+                    <h5>Rent Payment</h5>
+                    <p>Rent due date: 25th of each month</p>
+                    <p>Amount due: $2,500</p>
+                    <button class="btn btn-primary">Pay Rent</button>
+                </div>
+                <div class="mt-5">
+                    <h5>Utilities</h5>
+                    <p>Electricity: $50</p>
+                    <p>Water: $30</p>
+                    <button class="btn btn-primary">Pay Utilities</button>
+                </div>
+		{% if current_user.is_authenticated %}
+		                    <a href="{{ url_for('logout') }}">logout</a>
+				                        {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
