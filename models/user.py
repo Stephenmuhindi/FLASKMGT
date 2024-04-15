@@ -14,6 +14,7 @@ class User(BaseModel, UserMixin, Base):
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
+        properties = relationship("Properties", backref="user", cascade="all, delete-orphan")
     else:
         email = ""
         password = ""

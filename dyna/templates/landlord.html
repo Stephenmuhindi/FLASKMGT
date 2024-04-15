@@ -1,99 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Landlord Dashboard</title>
-    <!-- Include Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Include Font Awesome CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <h2 class="text-center mt-5">Landlord Dashboard</h2>
-                <div class="mt-5">
-                    <h5>Welcome, Landlord</h5>
-                    <p>You can manage your rental properties and tenants here.</p>
-                </div>
-                <div class="mt-5">
-                    <h5>Properties</h5>
-                    <button class="btn btn-primary">Add Property</button>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Property</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Property 1</td>
-                                <td>1234 Main St</td>
-                                <td>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Property 2</td>
-                                <td>5678 Park St</td>
-                                <td>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-5">
-                    <h5>Tenants</h5>
-                    <button class="btn btn-primary">Add Tenant</button>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>John Doe</td>
-                                <td>john.doe@example.com</td>
-                                <td>+1 (123) 456-7890</td>
-                                <td>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jane Smith</td>
-                                <td>jane.smith@example.com</td>
-                                <td>+1 (456) 789-0123</td>
-                                <td>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-		{% if current_user.is_authenticated %}
-		                    <a href="{{ url_for('logout') }}">logout</a>
-				                        {% endif %}
-            </div>
-        </div>
-    </div>
-</body>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Landlord Dashboard</title>
+		<!-- Include Bootstrap CSS -->
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Include Font Awesome CSS -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					<h2 class="text-center mt-5">Landlord Dashboard</h2>
+					<div class="mt-5">
+						<h5>Welcome, Landlord</h5>
+						<p>You can manage your rental properties and tenants here.</p>
+					</div>
+					<div class="mt-5">
+						<h5>Properties</h5>
+						<form method="POST" action="">
+							{{ form.hidden_tag() }}
+							<div class="formgroup">
+								{{ form.property_name.label(class="form-control-label") }}
+								{% if form.property_name.errors %}
+								{{ form.property_name(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in form.property_name.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+								{% else %}
+								{{ form.property_name(class="form-control form-control-lg") }}
+								{% endif %}						
+							</div> 
+							<div class="formgroup">
+								{{ form.adress.label(class="form-control-label") }}
+								{% if form.adress.errors %}
+								{{ form.adress(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in form.adress.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+								{% else %}
+								{{ form.adress(class="form-control form-control-lg") }}
+								{% endif %}
+							</div>
+							<div class="formgroup">
+								{{ form.make.label(class="form-control-label") }}
+								{% if form.make.errors %}
+								{{ form.make(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in form.make.errors %}
+									<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+								{% else %}
+								{{ form.make(class="form-control form-control-lg") }}
+								{% endif %}
+							</div>
+							<div>
+								{{ form.submit }}
+							</div>
+						</form>
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Property</th>
+									<th scope="col">Address</th>
+									<th scope="col">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>Property 1</td>
+									<td>1234 Main St</td>
+									<td>
+										<button class="btn btn-primary">Edit</button>
+										<button class="btn btn-danger">Delete</button>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">2</th>
+									<td>Property 2</td>
+									<td>5678 Park St</td>
+									<td>
+										<button class="btn btn-primary">Edit</button>
+										<button class="btn btn-danger">Delete</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="mt-5">
+						<h5>Tenants</h5>
+						<button class="btn btn-primary">Add Tenant</button>
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Name</th>
+									<th scope="col">Email</th>
+									<th scope="col">Phone</th>
+									<th scope="col">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>John Doe</td>
+									<td>john.doe@example.com</td>
+									<td>+1 (123) 456-7890</td>
+									<td>
+										<button class="btn btn-primary">Edit</button>
+										<button class="btn btn-danger">Delete</button>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">2</th>
+									<td>Jane Smith</td>
+									<td>jane.smith@example.com</td>
+									<td>+1 (456) 789-0123</td>
+									<td>
+										<!-- Existing table for properties -->
+										<table class="table">
+											<thead>
+												<tr>
+													<th scope="col">#</th>
+													<th scope="col">Property</th>
+													<th scope="col">Address</th>
+													<th scope="col">Action</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for property in properties.values() %}
+												<tr>
+													<th scope="row">{{ loop.index }}</th>
+													<td>{{ property.name }}</td>
+													<td>{{ property.address }}</td>
+													<td>
+														<a href='#' class="btn btn-primary">Edit</a>
+														<form action='' method="post" style="display: inline;">
+															<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+														</form>
+													</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+
+										<button class="btn btn-primary">Edit</button>
+										<button class="btn btn-danger">Delete</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					{% if current_user.is_authenticated %}
+					<a href="{{ url_for('logout') }}">logout</a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</body>
 </html>

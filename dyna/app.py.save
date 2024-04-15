@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from flask import Flask, render_template, redirect, url_for, flash
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, login_user, logout_user, login_required
 from models import storage
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
@@ -13,7 +13,6 @@ from models.user import User
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 import os
 from flask_bcrypt import Bcrypt, check_password_hash
-from models.property import Properties
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -35,6 +34,11 @@ class RegistrationForm(FlaskForm):
     confirm = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('confirm', message='Passwords must match'), Length(min=8)])
     submit = SubmitField('signup')
 
+class PropertyForm(FlaskForm):
+    property_name = StringField('Property Name', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
+    submit = SubmitField('Add Property')
+
     def validate_email(self, email):
         #fetch email from form
         email = email.data
@@ -42,13 +46,6 @@ class RegistrationForm(FlaskForm):
         for user in users.values():
             if user.email == email:
                 raise ValidationError('use a different email')
-
-class PropertyForm(FlaskForm):
-    property_name = StringField('Property name', validators=[DataRequired()])
-    adress = StringField('Adress')
-    make = StringField('type of house')
-    submit = SubmitField('Add Property')
-
 
 @app.teardown_appcontext
 def close(error):
@@ -83,63 +80,62 @@ def login():
             flash('Invalid username or password.')
     return render_template('login.html', form=form)
 
-#@app.route('/landlord', methods=['GET', 'POST'])
-#@login_required
-#def landlord():
-#    form = PropertyForm()
+@app.route('/landlord', methods=['GET', 'POST'])
+@login_required
+def landlord():
+    form = PropertyForm()
 
-#    if form.validate_on_submit():
+    if form.validate_on_submit():
         # Create a new property
-#        property_name = form.property_name.data
-#        address = form.address.data
+        property_name = form.property_name.data
+        address = form.address.data
         # You might want to link the new property to the logged-in landlord user here
-#        new_property = Property(name=property_name, address=address)
-#        storage.new(new_property)
-#        storage.save()
-#        flash('Property added successfully.')
-#        return redirect(url_for('landlord'))
+        new_property = Property(name=property_name, address=address)
+        storage.new(new_property)
+        storage.save()
+        flash('Property added successfully.')
+        return redirect(url_for('landlord'))
 
     # Retrieve properties from the database
 #    properties = storage.all(Property)
-#    print("Properties:", properties)
 
-#    return render_template('landlord.html', form=form, properties=properties)
+    return render_template('landlord.html')
 
-#@app.route('/landlord/edit/<property_id>', methods=['GET', 'POST'])
-#@login_required
-#def edit_property(property_id):
-#    form = PropertyForm()
-#    property_to_edit = storage.get(Property, property_id)
-#
-#    if property_to_edit is None:
-#        flash('Property not found.')
-#        return redirect(url_for('landlord'))
+@app.route('/landlord/edit/<property_id>', methods=['GET', 'POST'])
+@login_required
+def edit_property(property_id):
+    form = PropertyForm()
+    property_to_edit = storage.get(Property, property_id)
 
-#    if form.validate_on_submit():
-#        property_to_edit.name = form.property_name.data
-#        property_to_edit.address = form.address.data
-#        storage.save()
-#        flash('Property updated successfully.')
-#        return redirect(url_for('landlord'))
+    if property_to_edit is None:
+        flash('Property not found.')
+        return redirect(url_for('landlord'))
 
-#    form.property_name.data = property_to_edit.name
-#    form.address.data = property_to_edit.address
+    if form.validate_on_submit():
+        property_to_edit.name = form.property_name.data
+        property_to_edit.address = form.address.data
+        storage.save()
+        flash('Property updated successfully.')
+        return redirect(url_for('landlord'))
 
-#    return render_template('edit_property.html',)
+    form.property_name.data = property_to_edit.name
+    form.address.data = property_to_edit.address
 
-#@app.route('/landlord/delete/<property_id>', methods=['POST'])
-#@login_required
-#def delete_property(property_id):
-#    property_to_delete = storage.get(Property, property_id)
-#
- #   if property_to_delete:
-#        storage.delete(property_to_delete)
-#        storage.save()
-#        flash('Property deleted successfully.')
- #   else:
-  #      flash('Property not found.')
+    return render_template('edit_property.html',)
 
-   # return redirect(url_for('landlord'))
+@app.route('/landlord/delete/<property_id>', methods=['POST'])
+@login_required
+def delete_property(property_id):
+    property_to_delete = storage.get(Property, property_id)
+
+    if property_to_delete:
+        storage.delete(property_to_delete)
+        storage.save()
+        flash('Property deleted successfully.')
+    else:
+        flash('Property not found.')
+
+    return redirect(url_for('landlord'))
 
 
 
@@ -152,22 +148,14 @@ def tenant():
    # data_tenant = json.loads(response_tenant.text)
     return render_template('tenant.html')
 
-@app.route('/landlord',  methods=['GET', 'POST'])
-@login_required
-def landlord():
+#@app.route('/landlord')
+#@login_required
+#def landlord():
     # Make API call to get landlord property data
     #api_landlord = 'https://your_landlord_api_url'
     #response_landlord = get(api_landlord)
     #data_landlord = json.loads(response_landlord.text)
-    if current_user.is_authenticated:
-        user_id = current_user.id
-        form = PropertyForm()
-        if form.validate_on_submit():
-           new_property = Properties(user_id=user_id, property_name=form.property_name.data, adress=form.adress.data, make=form.make.data)
-           storage.new(new_property)
-           storage.save()
-        properties = storage.all(Properties)
-        return render_template('landlord.html', properties=properties, form=form)
+#    return render_template('landlord.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
