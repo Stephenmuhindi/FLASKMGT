@@ -41,9 +41,9 @@ For the next iteration, I plan to focus on:
 
 ### 📅 Timeline
 
-- **Planning & Research:** 2 weeks
-- **Development:** 6 weeks
-- **Testing & Optimization:** 3 weeks
+- **Planning & Research:** 3 weeks
+- **Development:** 1 weeks
+- **Testing & Optimization:** 3 days
 - **Deployment & Launch:** 1 week
 
 ### 🤝 Join Me on This Journey
