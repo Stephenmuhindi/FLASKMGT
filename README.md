@@ -4,7 +4,7 @@
 
 ### 🌟 Inspiration
 
-Imagine being a property owner in Kenya, struggling to find a reliable platform to list your rental properties. That was the spark behind ONLINE PROPERTY MANAGER. Frustrated by the lack of specialized platforms catering to the unique needs of property owners and short-term clients in Kenya, I envisioned a solution that would not only fill this gap but also ensure accessibility for visually impaired users.
+Imagine being a property owner in Kenya, struggling to find a reliable platform to list your rental properties. That was the spark behind ONLINE PROPERTY MANAGER. Frustrated by the lack of specialized platforms catering to the unique needs of property owners and short-term clients in Kenya, I envisioned a solution that would not only fill this gap but also ensure accessibility for impaired users.
 
 ### 🚀 The Challenge
 
